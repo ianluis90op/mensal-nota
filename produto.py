@@ -1,10 +1,10 @@
 class Produto:
-    def __init__(self, id, nome, preco, descricao, quantidadeEstoque):
+    def __init__(self, id, nome, preco_unitario, descricao, estoque):
         self.__id = id
         self.__nome = nome
-        self.__preco = preco
+        self.__preco_unitario = preco_unitario
         self.__descricao = descricao
-        self.__quantidadeEstoque = quantidadeEstoque
+        self.__estoque = estoque
 
     @property
     def id(self):
@@ -15,26 +15,26 @@ class Produto:
         return self.__nome
 
     @property
-    def preco(self):
-        return self.__preco
+    def preco_unitario(self):
+        return self.__preco_unitario
 
     @property
     def descricao(self):
         return self.__descricao
 
-    def decrementarEstoque(self, quantidade):
+    def decrementar_estoque(self, quantidade):
         if quantidade <= 0:
             return False
 
-        if self.__quantidadeEstoque >= quantidade:
-            self.__quantidadeEstoque -= quantidade
+        if self.__estoque >= quantidade:
+            self.__estoque -= quantidade
             return True
 
         return False
 
     def incrementarEstoque(self, quantidade):
         if quantidade > 0:
-            self.__quantidadeEstoque += quantidade
+            self.__estoque += quantidade
 
     def verificarEstoque(self):
-        return self.__quantidadeEstoque
+        return self.__estoque
