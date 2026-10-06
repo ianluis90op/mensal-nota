@@ -1,10 +1,9 @@
 from produto import Produto
 from venda import Venda
-
+from datetime import datetime
 
 
 # OS PRODUTOS
-
 
 produto1 = Produto(
     1,
@@ -31,37 +30,35 @@ produto3 = Produto(
 )
 
 
-
 # A VENDA
-
 
 venda1 = Venda(
     1,
-    "04/10/2026"
+    datetime(2026, 10, 4)
 )
 
 
+# ADD PRODUTOS
 
-# add PRODUTOS
-
-
-venda1.adicionarItem(produto1, 2)
-
-venda1.adicionarItem(produto2, 1)
-
-venda1.adicionarItem(produto3, 1)
+venda1.adicionar_item(produto1, 2)
+venda1.adicionar_item(produto2, 1)
+venda1.adicionar_item(produto3, 1)
 
 
+# REMOVENDO O TECLADO
 
-# Exibir o COMPROVANTE
+if venda1.remover_item(produto2):
+    print("Teclado removido da venda!")
+else:
+    print("Produto não encontrado na venda.")
 
+
+# EXIBIR O COMPROVANTE
 
 venda1.exibirComprovante()
 
 
-
-# visualizar O ESTOQUE
-
+# VISUALIZAR O ESTOQUE
 
 print("\n========== ESTOQUE ==========")
 
