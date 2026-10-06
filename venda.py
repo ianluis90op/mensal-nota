@@ -6,6 +6,7 @@ class Venda:
         self.__id = id
         self.__data = data
         self.__itens = []
+        self.__valor_total = 0.0
 
     @property
     def id(self):
@@ -19,19 +20,16 @@ class Venda:
     def itens(self):
         return self.__itens.copy()
 
-    def adicionarItem(self, produto, quantidade):
+    def adicionar_item(self, produto, quantidade):
         if quantidade <= 0:
             print("A quantidade deve ser maior que zero.")
             return False
 
-        if produto.decrementarEstoque(quantidade):
-
-            item = ItemVenda(
-                quantidade,
-                produto
-            )
+        if produto.decrementar_estoque(quantidade):
+            item = ItemVenda(quantidade, produto)
 
             self.__itens.append(item)
+            self.calcular_total()
 
             print(
                 f"{quantidade}x {produto.nome} "
@@ -40,20 +38,32 @@ class Venda:
 
             return True
 
-        print(
-            f"Estoque insuficiente para "
-            f"{produto.nome}."
-        )
-
+        print(f"Estoque insuficiente para {produto.nome}.")
         return False
 
-    def calcularTotal(self):
-        total = 0
+    def remover_item(self, produto):
+        removeu = False
+
+        for item in self.__itens.copy():
+            if item.produto is produto:
+                produto.incrementarEstoque(item.quantidade)
+                self.__itens.remove(item)
+                removeu = True
+
+        self.calcular_total()
+        return removeu
+    
+    @property
+    def valor_total(self):
+        return self.__valor_total
+
+    def calcular_total(self):
+        self.__valor_total = 0.0
 
         for item in self.__itens:
-            total += item.calcularSubtotal()
+            self.__valor_total += item.calcular_subtotal()
 
-        return total
+        return self.__valor_total
 
     def calcularQtdTotal(self):
         quantidadeTotal = 0
@@ -65,30 +75,18 @@ class Venda:
 
     def exibirComprovante(self):
         print("\n========== COMPROVANTE ==========")
-
         print(f"Venda: {self.__id}")
-        print(f"Data: {self.__data}")
-
+        print(f"Data: {self.__data.strftime('%d/%m/%Y')}")
         print("---------------------------------")
 
         for item in self.__itens:
             print(
                 f"{item.produto.nome} | "
                 f"{item.quantidade}x | "
-                f"R$ {item.produto.preco:.2f} | "
-                f"Subtotal: R$ {item.calcularSubtotal():.2f}"
+                f"R$ {item.valor_item:.2f} | "
+                f"Subtotal: R$ {item.calcular_subtotal():.2f}"
             )
-
         print("---------------------------------")
-
-        print(
-            f"Quantidade total: "
-            f"{self.calcularQtdTotal()}"
-        )
-
-        print(
-            f"Valor total: "
-            f"R$ {self.calcularTotal():.2f}"
-        )
-
+        print(f"Quantidade total: {self.calcularQtdTotal()}")
+        print(f"Valor total: R$ {self.calcular_total():.2f}")
         print("=================================")
